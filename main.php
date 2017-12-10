@@ -10,9 +10,13 @@ spl_autoload_register(function ($class) {
 use GithubApi\GithubApi;
 
 $githubApi = new GithubApi();
-$result = $githubApi->getRepositoryChanges(['repository' => '', 'owner_of_repository' => '']);
 
-    if(!file_exists('history.txt')) {
+while (true) {
+
+    sleep(60);
+    $result = $githubApi->getRepositoryChanges(['repository' => '', 'owner_of_repository' => '']);
+
+    if (!file_exists('history.txt')) {
         file_put_contents('history.txt', '');
     }
 
@@ -20,18 +24,19 @@ $result = $githubApi->getRepositoryChanges(['repository' => '', 'owner_of_reposi
     $new_history = null;
 
     foreach ($result as $key => $value) {
-        if($value->type == "PushEvent") {
+        if ($value->type == "PushEvent") {
             $new_history .= $value->id;
         }
     }
 
-    if(empty($old_history_file) || $old_history_file != $new_history) {
-        file_put_contents('history.txt',$new_history);
-        echo 'Updated'.PHP_EOL;
+    if (empty($old_history_file) || $old_history_file != $new_history) {
+        file_put_contents('history.txt', $new_history);
+        echo 'Updated' . PHP_EOL;
+//        Do whatever you want here (git pull or something)
     } else {
-        echo 'OK'.PHP_EOL;
+        echo 'No changes' . PHP_EOL;
     }
-
+}
 
 
 
