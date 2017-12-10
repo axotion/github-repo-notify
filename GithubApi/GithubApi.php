@@ -14,17 +14,18 @@ class GithubApi
 {
 
     public $config;
+    public $client;
 
     public function __construct($config = null)
     {
         $this->config = $config;
+        $this->client = new Client();
     }
 
     public function getRepositoryChanges(array $data)
     {
-        $client = new Client();
         $request = new RepoChangesRequest($data);
-        return json_decode($client->request($request->method(), $request->path())->getBody());
+        return json_decode($this->client->request($request->method(), $request->path())->getBody());
 
     }
 }

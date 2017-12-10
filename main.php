@@ -12,7 +12,7 @@ use GithubApi\GithubApi;
 $githubApi = new GithubApi();
 
 while (true) {
-
+    //Determine how often script call api
     sleep(60);
     $result = $githubApi->getRepositoryChanges(['repository' => '', 'owner_of_repository' => '']);
 
